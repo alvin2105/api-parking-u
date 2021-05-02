@@ -13,7 +13,7 @@ class Parkir extends Migration
      */
     public function up()
     {
-        Schema::create('parkir', function (Blueprint $table) {
+        Schema::create('parkirs', function (Blueprint $table) {
             $table->id();
             $table->string('nama_parkir');
             $table->string('lokasi_parkir');
@@ -34,6 +34,6 @@ class Parkir extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parkir');
+        Schema::dropIfExists('parkirs');
     }
 }

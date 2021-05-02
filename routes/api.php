@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ParkirController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/parkir', [ParkirController::class, 'index']);
     Route::get('/parkir/{id}', [ParkirController::class, 'show']);
     Route::get('/parkir/search/{nama_parkir}', [ParkirController::class, 'search']);
+    Route::get('/user', [UserController::class, 'index']);
+    Route::get('/user/{id}', [UserController::class, 'show']);
+    Route::put('/user/{id}', [UserController::class, 'update']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 

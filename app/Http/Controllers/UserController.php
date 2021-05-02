@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Parkir;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class ParkirController extends Controller
+class UserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +14,7 @@ class ParkirController extends Controller
      */
     public function index()
     {
-        return Parkir::all();
+        return User::all();
     }
 
     /**
@@ -25,16 +26,16 @@ class ParkirController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_parkir' => 'required',
-            'lokasi_parkir' => 'required',
-            'harga' => 'required',
-            'jarak' => 'required',
+            'nama_lengkap' => 'required',
+            'email' => 'required',
+            'nopol' => 'required',
+            'jenis_kendaraan' => 'required',
             'jam' => 'required',
-            'rating' => 'required'
+            'password' => 'required'
 
         ]);
 
-        return Parkir::create($request->all());
+        return User::create($request->all());
     }
 
     /**
@@ -45,7 +46,7 @@ class ParkirController extends Controller
      */
     public function show($id)
     {
-        return Parkir::find($id);
+        return User::find($id);
     }
 
     /**
@@ -57,12 +58,15 @@ class ParkirController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $parkir = Parkir::find($id);
-        $parkir->update($request->all());
-       // return $parkir;
+        $user = User::find($id);
+        $user->update($request->has('password') ? $request->all() : $request->except(['password']));
+        if ($request->has('password'))
+        {
+            User::where('id', $id)->update(array('password' => bcrypt($request->input('password'))));
+        }
         $response = [
 			'message'=>'Update Succesfully',
-            'parkir' => $parkir,
+            'User' => $user,
         ];
 
         return response($response);
@@ -76,17 +80,17 @@ class ParkirController extends Controller
      */
     public function destroy($id)
     {
-        return Parkir::destroy($id);
+        return User::destroy($id);
     }
 
     /**
      * Search for a name
      *
-     * @param  str  $nama_parkir
+     * @param  str  $nama_User
      * @return \Illuminate\Http\Response
      */
-    public function search($nama_parkir)
+    public function search($nama_lengkap)
     {
-        return Parkir::where('nama_parkir', 'like', '%'.$nama_parkir.'%')->get();
+        return User::where('nama_User', 'like', '%'.$nama_lengkap.'%')->get();
     }
 }
